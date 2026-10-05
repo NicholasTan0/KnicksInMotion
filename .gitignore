@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.env.*
+*.parquet
+__pycache__/
+*.pyc
+.DS_Store

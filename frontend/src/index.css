@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Economica:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-subway: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mont: "Montserrat", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-oswald: "Oswald", sans-serif;
+  --font-econ: "Economica", sans-serif;
+  --font-rale: "Raleway", sans-serif;
+  --font-lato: "Lato", sans-serif;
+  --color-blue: #0062CF;
+  --color-orange: #EB6800;
+  --color-yellow: #F6BC26;
+}
+
+input {
+  cursor: pointer;
+}
+
+.maplibregl-popup-close-button {
+  @apply pr-1! outline-0! border-0! 
+}
+
+.maplibregl-popup-content {
+  @apply dark:bg-neutral-950! dark:text-white! outline! pointer-events-none! p-1! text-nowrap! min-w-fit!;
+}
+
+.maplibregl-popup-tip {
+  @apply dark:border-t-neutral-950!;
+}
+
+.maplibregl-ctrl-attrib-inner {
+  @apply bg-white dark:bg-black text-black! dark:text-white!;
+}
+
+.maplibregl-ctrl-attrib-inner a{
+  @apply text-black! dark:text-white!;
+}
+
+.maplibregl-ctrl.maplibregl-ctrl-attrib {
+  padding: 0;
+}
+
+.maplibregl-ctrl-bottom-right {
+  margin-bottom: 48px;
+}
