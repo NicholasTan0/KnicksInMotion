@@ -49,11 +49,11 @@ function App() {
                 : <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>}
               </svg>
             </button>
-            <div className={`fixed z-1000 right-0 top-14 py-8 pl-3 w-full h-[calc(100vh-56px)] bg-white dark:bg-black box-border border-current/20 transition-all duration-250 ${mobileNavOpen ? "translate-x-0" : "translate-x-full"}`}>
-              {/* <div className='flex justify-end items-center text-black dark:text-white'>
+            <div className={`fixed z-1000 right-0 top-14 py-4 pl-3 w-full h-[calc(100vh-56px)] bg-white dark:bg-black text-black dark:text-white box-border border-current/20 transition-all duration-250 ${mobileNavOpen ? "translate-x-0" : "translate-x-full"}`}>
+              <div className='flex justify-end items-center text-black dark:text-white'>
                 <Dropdown theme={theme} setTheme={setTheme}/>
-              </div> */}
-              <nav className='flex flex-col justify-center items-center gap-8 text-xl'>
+              </div>
+              <nav className='flex flex-col justify-center items-center gap-12 mt-8 text-2xl tracking-wider font-econ'>
                 <button onClick={()=>{setMode("visualization"); setMobileNavOpen(false);}} className={`text-center cursor-pointer box-border ${mode === "visualization" && "border-b-2"}`}>Visualization</button>
                 <button onClick={()=>{setMode("analysis"); setMobileNavOpen(false);}} className={`text-center cursor-pointer box-border ${mode === "analysis" && "border-b-2"}`}>Analysis</button>
                 <button onClick={()=>{setMode("about"); setMobileNavOpen(false);}} className={`text-center cursor-pointer box-border ${mode === "about" && "border-b-2"}`}>Methodology</button>

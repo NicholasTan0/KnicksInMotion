@@ -837,7 +837,7 @@ export default function MapView({ theme, mode, setMode }) {
                 </div>
 
                 {/* INFORMATION */}
-                <div className="hidden sm:flex flex-col justify-center items-end absolute top-2.5 right-2.5 w-min gap-2.5 z-1002 transition-all opacity-90 hover:opacity-100">
+                <div className="flex flex-col justify-center items-end absolute top-2.5 right-2.5 w-min gap-2.5 z-1002 transition-all opacity-93 hover:opacity-100">
                     <div className="flex flex-col w-full justify-center items-start p-2.5 border border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 text-base font-mont">
                         <div className="font-bold text-nowrap">{totalTrips.toLocaleString()} trips</div>
                         <div className="font-semibold italic text-nowrap flex gap-1 text-xs">
@@ -848,14 +848,14 @@ export default function MapView({ theme, mode, setMode }) {
                             <div className="first-letter:uppercase">{selectedTaxiType === "all" ? "All Services" : (selectedTaxiType === "fhvhv" ? "Uber & Lyft" : "Taxis")}</div>
                         </div>
                         <hr className="my-1.5 w-full"></hr>
-                        <ol className="list-decimal list-inside">
-                            {maxTrips.slice(0,5).map(zone => <li key={zone.id}>
+                        <ol className="list-decimal list-inside max-h-43 overflow-y-auto scrollbar-thumb-neutral-500 scrollbar-thin">
+                            {maxTrips.map(zone => <li key={zone.id}>
                                 {zone.name} ({zone.trips})
                             </li>)}
                         </ol>
                     </div>
-                    <div className={`flex flex-col justify-center items-start p-2.5 border border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 text-sm font-mont transition-all duration-300 ${((mode === "analysis" && page !== 3) || mode === "about" || (showVisualization && level === "playoffs")) && "opacity-0"}`}>
-                        {level === "playoffs" && <div className="flex justify-center items-center gap-2">
+                    <div className={`flex flex-col justify-center items-start p-2.5 border border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 text-base md:text-lg font-mont ${((mode === "analysis" && page !== 3) || mode === "about" || (showVisualization && level === "playoffs")) && "hidden"}`}>
+                        {level === "playoffs" && <div className="flex justify-center items-center gap-2 text-sm">
                             {funFacts[random]}
                             <button 
                                 className="cursor-pointer hover:animate-spin" 
@@ -900,7 +900,7 @@ export default function MapView({ theme, mode, setMode }) {
 
                 {/* STORY */}
                 {(mode === "visualization") && <div 
-                    className={`absolute z-1002 top-0 left-0 w-full md:w-1/3 text-white text-sm lg:text-base transition-opacity duration-300 ${isOpen && "opacity-0"} ${showVisualization ? "" : "-translate-x-[calc(100%-120px)] w-min!"}`}
+                    className={`absolute z-1002 top-0 left-0 w-full md:w-1/3 text-white text-sm lg:text-base transition-opacity duration-300 ${isOpen && "opacity-0"} ${showVisualization ? "translate-y-0" : "translate-y-13.5 md:translate-y-0 md:-translate-x-[calc(100%-120px)] w-min!"}`}
                 >
                     <div className="m-2.5 relative px-5 pt-7 pb-3 rounded-none border-2 border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 font-rale text-center">
                         <button className="absolute top-1 right-1 p-2 text-3xl cursor-pointer" onClick={()=>setShowVisualization(!showVisualization)} title={showVisualization ? "Hide" : "Show"}>
@@ -917,7 +917,7 @@ export default function MapView({ theme, mode, setMode }) {
                             <span className="mb-0.5 font-bold justify-center items-center text-lg flex gap-1"><span className="select-none">&ndash;</span>Knicks in Motion<span className="select-none">&ndash;</span></span>
                             {page === 1 && <p>
                                 How does New York City move when the Knicks play? This visualization maps taxi and rideshare activity across New York City during all 19 games of the Knicks' 2026 playoff run, from the First Round through the NBA Finals. Using the NYC Taxi and Limousine Commission's <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold hover:underline">trip record data</a>, 
-                                raw trip volumes across NYC <a href="https://data.cityofnewyork.us/Transportation/NYC-Taxi-Zones/8meu-9t5y/about_data" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold hover:underline">taxi zones</a> are aggregated around game-day time windows.
+                                the visualization aggregates raw trip volumes across NYC <a href="https://data.cityofnewyork.us/Transportation/NYC-Taxi-Zones/8meu-9t5y/about_data" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold hover:underline">taxi zones</a> around game-day time windows.
                                 <br/><br/>
                                 The analysis covers activity associated with Madison Square Garden and selected team-sanctioned watch party locations, combining trip patterns with information about each game to show how activity varied throughout the playoff run.
                             </p>}
@@ -1296,7 +1296,7 @@ export default function MapView({ theme, mode, setMode }) {
                     <div className={`fixed z-1000 left-0 top-14 h-[calc(100vh-56px)] min-w-[320px] w-1/5 bg-white dark:bg-black dark:text-neutral-200 box-border border-r border-current/20 transition-all duration-250 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                         <div className="mt-16 h-full font-oswald text-xl">
                             <hr className="text-neutral-300 dark:text-neutral-700 mt-2"/>
-                            <div className="flex flex-col gap-4 py-4 px-2 h-[calc(100vh-121px)] overflow-y-auto scrollbar-thumb-neutral-400 scrollbar-thin scrollbar-gutter-both">
+                            <div className="flex flex-col gap-4 p-4 h-[calc(100vh-121px)] overflow-y-auto scrollbar-thumb-neutral-400 scrollbar-thin">
                                 <h2 className="font-bold">Filters</h2>
                                 <label className="flex flex-col gap-2 text-nowrap">
                                     <div className="w-20">Scope:</div>
@@ -1451,7 +1451,7 @@ export default function MapView({ theme, mode, setMode }) {
                                 <hr className="text-neutral-300 dark:text-neutral-700 my-2"/>
 
                                 <button 
-                                className="w-max px-2 py-1 self-center mt-auto cursor-pointer text-neutral-700 dark:text-neutral-300 hover:underline active:scale-96"
+                                className="w-full py-3 self-center mt-auto cursor-pointer bg-neutral-200 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 hover:dark:bg-neutral-800 active:scale-96"
                                 onClick={()=>{
                                     setLevel("playoffs");
                                     setSelectedGame(1);
@@ -1462,10 +1462,11 @@ export default function MapView({ theme, mode, setMode }) {
                                     setSelectedLocations(DEFAULT_LOCATIONS);
                                     setStartColor("#006BB6");
                                     setEndColor("#F58426");
+                                    setLineColor("white")
                                     setIntensity(6);
                                     setFillOpacity(75);
                                 }}
-                                >Restore Defaults?</button>
+                                >Restore Defaults</button>
                             </div>
                         </div>
                     </div>
