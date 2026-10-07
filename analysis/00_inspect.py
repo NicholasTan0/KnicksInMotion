@@ -18,10 +18,10 @@ def inspect_file(path):
 
     parquet_file = pq.ParquetFile(path)
 
-    print(f"Rows: {parquet_file.metadata.num_rows}")
-    print(f"Columns: {parquet_file.schema_arrow.names}")
+    print(f"rows: {parquet_file.metadata.num_rows}")
+    print(f"columns: {parquet_file.schema_arrow.names}")
 
-    print("\nSchema:")
+    print("\nschema:")
     print(parquet_file.schema_arrow)
 
     print("\nSample:")

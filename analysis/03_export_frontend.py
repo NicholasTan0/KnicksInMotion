@@ -123,10 +123,6 @@ def export_statistics(df, filename, zone_lookup):
 
     result = df.copy()
 
-    # ---------------------------------------------------------
-    # MAPPED ZONE
-    # ---------------------------------------------------------
-
     result["zone"] = result["zone"].astype(int)
 
     result["zone_name"] = result["zone"].map(
@@ -148,10 +144,6 @@ def export_statistics(df, filename, zone_lookup):
             "zone": "zone_id"
         }
     )
-
-    # ---------------------------------------------------------
-    # ATTENTION ZONE
-    # ---------------------------------------------------------
 
     if "attention_zone" not in result.columns:
         raise ValueError(
@@ -182,10 +174,6 @@ def export_statistics(df, filename, zone_lookup):
         }
     )
 
-    # ---------------------------------------------------------
-    # COLUMN ORDER
-    # ---------------------------------------------------------
-
     preferred_columns = [
         "game_id",
         "game",
@@ -213,10 +201,6 @@ def export_statistics(df, filename, zone_lookup):
     ]
 
     result = result[columns]
-
-    # ---------------------------------------------------------
-    # EXPORT
-    # ---------------------------------------------------------
 
     records = dataframe_to_records(result)
 
@@ -259,10 +243,6 @@ def export_games():
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ---------------------------------------------------------
-    # LOAD
-    # ---------------------------------------------------------
-
     zones = load_zones()
 
     game, series, playoffs = load_aggregates()
@@ -271,35 +251,19 @@ def main():
 
     print(f"Zone metadata entries: {len(zone_lookup):,}")
 
-    # ---------------------------------------------------------
-    # EXPORT GEOMETRY
-    # ---------------------------------------------------------
-
     export_zone_metadata(zones)
-
-    # ---------------------------------------------------------
-    # EXPORT GAME DATA
-    # ---------------------------------------------------------
 
     export_statistics(
         game,
         "game_zone_stats.json",
         zone_lookup
     )
-
-    # ---------------------------------------------------------
-    # EXPORT SERIES DATA
-    # ---------------------------------------------------------
-
+    
     export_statistics(
         series,
         "series_zone_stats.json",
         zone_lookup
     )
-
-    # ---------------------------------------------------------
-    # EXPORT PLAYOFF DATA
-    # ---------------------------------------------------------
 
     export_statistics(
         playoffs,
@@ -307,15 +271,7 @@ def main():
         zone_lookup
     )
 
-    # ---------------------------------------------------------
-    # EXPORT GAME METADATA
-    # ---------------------------------------------------------
-
     export_games()
-
-    # ---------------------------------------------------------
-    # FINISHED
-    # ---------------------------------------------------------
 
     print("\n" + "=" * 80)
     print("FRONTEND EXPORT COMPLETE")

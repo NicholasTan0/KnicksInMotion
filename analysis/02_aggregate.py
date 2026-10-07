@@ -34,12 +34,12 @@ def prepare_zone_data(df):
 
     result = df.copy()
 
-    # Pre-game trips are represented by their pickup/origin zone.
+    # Pre-game trips represented by their pickup zone.
     result["zone"] = result["pickup_zone"]
 
     post_mask = result["period"] == "post-game"
 
-    # Post-game trips are represented by their dropoff/destination zone.
+    # Post-game trips represented by their dropoff zone.
     result.loc[post_mask, "zone"] = result.loc[
         post_mask,
         "dropoff_zone"
@@ -167,11 +167,7 @@ def print_summary(name, df):
 
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-    # ---------------------------------------------------------
-    # LOAD
-    # ---------------------------------------------------------
-
+    
     trips = load_trips()
 
     print("\nSERIES DISTRIBUTION")
@@ -199,7 +195,7 @@ def main():
         .to_string(index=False)
     )
 
-    print("\nATTENTION ZONE DISTRIBUTION")
+    # print("\nATTENTION ZONE DISTRIBUTION")
 
     print(
         trips[
@@ -222,15 +218,7 @@ def main():
         .to_string(index=False)
     )
 
-    # ---------------------------------------------------------
-    # PREPARE ZONE DATA
-    # ---------------------------------------------------------
-
     zone_trips = prepare_zone_data(trips)
-
-    # ---------------------------------------------------------
-    # GAME LEVEL
-    # ---------------------------------------------------------
 
     game_zones = aggregate_game_zones(zone_trips)
 
@@ -241,9 +229,6 @@ def main():
         "game_zone_stats.parquet"
     )
 
-    # ---------------------------------------------------------
-    # SERIES LEVEL
-    # ---------------------------------------------------------
 
     series_zones = aggregate_series_zones(zone_trips)
 
@@ -263,10 +248,6 @@ def main():
         "series_zone_stats.parquet"
     )
 
-    # ---------------------------------------------------------
-    # PLAYOFF LEVEL
-    # ---------------------------------------------------------
-
     playoff_zones = aggregate_playoffs_zones(zone_trips)
 
     print_summary("PLAYOFF ZONE DATA", playoff_zones)
@@ -275,10 +256,6 @@ def main():
         playoff_zones,
         "playoffs_zone_stats.parquet"
     )
-
-    # ---------------------------------------------------------
-    # FINAL SUMMARY
-    # ---------------------------------------------------------
 
     print("\n" + "=" * 80)
     print("AGGREGATION COMPLETE")

@@ -9,7 +9,6 @@ RAW_DIR = Path("data/raw")
 GAMES_FILE = Path("data/reference/games.json")
 OUTPUT_FILE = Path("data/processed/trips/game_trips.parquet")
 
-# NYC TLC taxi zones
 MSG_ZONE = 186
 RADIO_CITY_ZONE = 161
 CENTRAL_PARK_ZONE = 43
@@ -51,26 +50,20 @@ def load_games():
         games = json.load(file)
 
     for game in games:
-        # Use the raw games.json ID as the unique game identifier.
         game["game_id"] = game["id"]
 
-        # Convert tipoff to timezone-aware datetime.
         tipoff = pd.Timestamp(game["tipoff"]).tz_convert(TIMEZONE)
 
-        # Calculate the actual end of the game.
         game_end = tipoff + pd.Timedelta(minutes=game["duration"])
 
-        # Store calculated times.
         game["tipoff"] = tipoff
         game["game_end"] = game_end
 
-        # Pre-game:
-        # tipoff - 2 hours <= pickup < tipoff
+        # Pregame: tipoff - 2 hours <= pickup < tipoff
         game["pre_start"] = tipoff - pd.Timedelta(hours=2)
         game["pre_end"] = tipoff
 
-        # Post-game:
-        # game_end <= pickup < game_end + 3 hours
+        # Postgame: game_end <= pickup < game_end + 3 hours
         game["post_start"] = game_end
         game["post_end"] = game_end + pd.Timedelta(hours=3)
 
@@ -137,20 +130,12 @@ def build_windows(games):
             "attention_zones": get_attention_zones(game),
         }
 
-        # ---------------------------------------------------------
-        # PRE-GAME
-        # ---------------------------------------------------------
-
         windows.append({
             **base,
             "period": "pre-game",
             "start": game["pre_start"],
             "end": game["pre_end"],
         })
-
-        # ---------------------------------------------------------
-        # POST-GAME
-        # ---------------------------------------------------------
 
         windows.append({
             **base,
@@ -166,7 +151,6 @@ def assign_game_periods(df, windows):
     results = []
 
     for window in windows:
-        # Use pickup time for BOTH periods.
         time_mask = (
             (df["pickup_datetime"] >= window["start"])
             & (df["pickup_datetime"] < window["end"])
@@ -180,11 +164,6 @@ def assign_game_periods(df, windows):
         attention_zones = window["attention_zones"]
 
         if window["period"] == "pre-game":
-            # Pre-game:
-            # Trips ending at one of the monitored locations.
-            #
-            # Since a trip has only one dropoff zone, each
-            # qualifying trip can have only one attention zone.
             period_df = period_df[
                 period_df["dropoff_zone"].isin(attention_zones)
             ]
@@ -195,11 +174,6 @@ def assign_game_periods(df, windows):
             period_df["attention_zone"] = period_df["dropoff_zone"]
 
         else:
-            # Post-game:
-            # Trips leaving one of the monitored locations.
-            #
-            # Since a trip has only one pickup zone, each
-            # qualifying trip can have only one attention zone.
             period_df = period_df[
                 period_df["pickup_zone"].isin(attention_zones)
             ]
@@ -250,8 +224,6 @@ def process_file(path, taxi_type, config, windows):
     ):
         df = batch.to_pandas()
 
-        # Rename the different taxi dataset schemas
-        # into one common schema.
         rename_columns = {
             config["pickup_col"]: "pickup_datetime",
             config["dropoff_col"]: "dropoff_datetime",
@@ -266,21 +238,17 @@ def process_file(path, taxi_type, config, windows):
 
         df = df.rename(columns=rename_columns)
 
-        # Remove trips involving unknown TLC zones.
         df = df[
             ~df["pickup_zone"].isin([264, 265])
             & ~df["dropoff_zone"].isin([264, 265])
         ]
 
-        # Remove zero-passenger Yellow/Green trips.
         if taxi_type in ["yellow", "green"]:
             df = df[df["passenger_count"] > 0]
 
         if df.empty:
             continue
 
-        # TLC timestamps are timezone-naive, so interpret them
-        # as New York local time.
         df["pickup_datetime"] = (
             pd.to_datetime(df["pickup_datetime"])
             .dt.tz_localize(TIMEZONE)
