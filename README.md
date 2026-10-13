@@ -6,11 +6,8 @@ Knicks in Motion is an interactive map that explores taxi and for-hire vehicle a
 
 **Live demo:** [knicksinmotion.app](https://knicksinmotion.app)
 
-<!-- Replace the placeholders below with real screenshots or a short GIF. -->
-
-<img width="1918" height="902" alt="image" src="https://github.com/user-attachments/assets/ffd962cc-9d4c-4e36-a589-91d9a4d797b9" />
-
-<img width="1919" height="903" alt="image" src="https://github.com/user-attachments/assets/f5ef864d-6868-4d88-80e5-078540b67313" />
+<img width="2460" height="1648" alt="Knicks in Motion" src="https://github.com/user-attachments/assets/812bf203-cc50-4f44-9c29-5f202297f60c" />
+<img width="2460" height="1648" alt="Knicks in Motion" src="https://github.com/user-attachments/assets/95944976-1c59-42d1-99a0-5911e2578217" />
 
 ## Highlights
 
@@ -73,49 +70,15 @@ This visualization shows **vehicle activity, not people**. Please read the resul
 - **Data pipeline:** Python
 - **Data format:** Static JSON and GeoJSON served from `public/data/`
 
-### Prerequisites
-
-- Node.js (current LTS recommended)
-- Python 3.x (only needed to regenerate the data)
-
-### Run the frontend
-
-```bash
-git clone https://github.com/NicholasTan0/knicks-in-motion.git
-cd knicks-in-motion/frontend
-npm install
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
-
-### MapLibre GL JS v6 note
-
-This project uses `maplibre-gl` v6, which ships as ES modules only and has no default export. Two things follow from that:
-
-- Import it as a namespace and pass it to the map: `import * as maplibregl from "maplibre-gl"` and `<Map mapLib={maplibregl} />`.
-- Vite builds must register the worker before a map renders:
-
-```js
-import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
-maplibregl.setWorkerUrl(workerUrl);
-```
-
-Use `?worker&url` rather than a plain `?url`, otherwise production builds can ship the worker without a file it imports.
-
 ## Project Structure
 
 ```
 knicks-in-motion/
 ├── frontend/
 │   ├── public/data/          # Processed GeoJSON and JSON used by the map
-│   └── src/components/       # Map, ColorPicker, Pin, and other UI components
-└── analysis/                 # Python data-processing scripts (adjust to match your layout)
-└── data/                     # cleaned and aggregated data
+│   └── src/components/       # Map, Pin, and other UI components
+└── analysis/                 # Python data-processing scripts
+└── data/                     # Cleaned and aggregated data
 ```
 
 ## Acknowledgments
