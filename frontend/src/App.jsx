@@ -34,15 +34,15 @@ function App() {
               </svg>
           </a>
         </div>
-        <nav className='hidden sm:flex w-1/3 justify-center items-center gap-4 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-32 text-sm md:text-base lg:text-lg xl:text-xl font-econ tracking-wider uppercase'>
+        <nav className='hidden md:flex w-1/3 justify-center items-center gap-4 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-32 text-sm md:text-base lg:text-lg xl:text-xl font-econ tracking-wider uppercase'>
           <button onClick={()=>setMode("visualization")} className={`w-1/3 text-center cursor-pointer box-border ${mode === "visualization" && "border-b-2"}`}>Visualization</button>
           <button onClick={()=>setMode("analysis")} className={`w-1/3 text-center cursor-pointer box-border ${mode === "analysis" && "border-b-2"}`}>Analysis</button>
           <button onClick={()=>setMode("about")} className={`w-1/3 text-center cursor-pointer box-border ${mode === "about" && "border-b-2"}`}>Methodology</button>
         </nav>
-        <div className="hidden sm:flex w-1/3 justify-end items-center">
+        <div className="hidden md:flex w-1/3 justify-end items-center">
             <Dropdown theme={theme} setTheme={setTheme}/>
         </div>
-        <div className="flex sm:hidden w-1/3 justify-end items-center mr-2">
+        <div className="flex md:hidden w-1/3 justify-end items-center mr-2">
             <button className='cursor-pointer' onClick={()=>setMobileNavOpen(!mobileNavOpen)}>
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                 {!mobileNavOpen ? <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>

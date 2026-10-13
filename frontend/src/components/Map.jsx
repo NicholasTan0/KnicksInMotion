@@ -162,6 +162,12 @@ export default function MapView({ theme, mode, setMode }) {
                 : window.matchMedia("(prefers-color-scheme: dark)").matches
                     ? "https://tiles.openfreemap.org/styles/dark"
                     : "https://tiles.openfreemap.org/styles/positron";
+    
+    useEffect(() => {
+        const dark = theme === "dark" ||
+            (theme === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+        setLineColor(dark ? "#ffffff" : "#292524");
+        }, [theme]);
 
     useEffect(()=>{
         if(level !== "playoffs") setShowMetadata(true);
@@ -305,10 +311,12 @@ export default function MapView({ theme, mode, setMode }) {
             }
             else if(page === 6){
                 setShowMetadata(false);
-                mapRef.current?.fitBounds(maxBounds, {
-                    pitch: 0,
-                    padding: 50,
-                    duration: 2000,
+                mapRef.current?.flyTo({
+                    center: MSG,
+                    zoom: 14,
+                    pitch: 65,
+                    bearing: 58,
+                    duration: 2000
                 });
                 setLevel("playoffs");
                 setSelectedHomeAway("home");
@@ -837,7 +845,7 @@ export default function MapView({ theme, mode, setMode }) {
                 </div>
 
                 {/* INFORMATION */}
-                <div className="flex flex-col justify-center items-end absolute top-2.5 right-2.5 w-min gap-2.5 z-1002 transition-all opacity-93 hover:opacity-100">
+                <div className="hidden md:flex flex-col justify-center items-end absolute top-2.5 right-2.5 w-min gap-2.5 z-1002 transition-all">
                     <div className="flex flex-col w-full justify-center items-start p-2.5 border border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 text-base font-mont">
                         <div className="font-bold text-nowrap">{totalTrips.toLocaleString()} trips</div>
                         <div className="font-semibold italic text-nowrap flex gap-1 text-xs">
@@ -848,13 +856,13 @@ export default function MapView({ theme, mode, setMode }) {
                             <div className="first-letter:uppercase">{selectedTaxiType === "all" ? "All Services" : (selectedTaxiType === "fhvhv" ? "Uber & Lyft" : "Taxis")}</div>
                         </div>
                         <hr className="my-1.5 w-full"></hr>
-                        <ol className="list-decimal list-inside max-h-43 overflow-y-auto scrollbar-thumb-neutral-500 scrollbar-thin">
+                        <ol className="list-decimal list-inside max-h-43 overflow-y-auto scrollbar-thumb-neutral-500 scrollbar-thin text-sm">
                             {maxTrips.map(zone => <li key={zone.id}>
                                 {zone.name} ({zone.trips})
                             </li>)}
                         </ol>
                     </div>
-                    <div className={`flex flex-col justify-center items-start p-2.5 border border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 text-base md:text-lg font-mont ${((mode === "analysis" && page !== 3) || mode === "about" || (showVisualization && level === "playoffs")) && "hidden"}`}>
+                    <div className={`flex flex-col justify-center items-start p-2.5 border border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 text-base md:text-lg font-mont ${((mode === "analysis" && page !== 3) || mode === "about" || (level === "playoffs")) && "hidden"}`}>
                         {level === "playoffs" && <div className="flex justify-center items-center gap-2 text-sm">
                             {funFacts[random]}
                             <button 
@@ -878,7 +886,7 @@ export default function MapView({ theme, mode, setMode }) {
                             <h3 className="text-nowrap mb-1 font-semibold uppercase underline underline-offset-3 tracking-wider">{selectedSeries === "r1" ? "First Round" : selectedSeries === "r2" ? "Eastern Conference Semifinals" : selectedSeries === "ecf" ? "Eastern Conference Finals" : "NBA Finals"}</h3>
                             <p className="text-nowrap">{getSeriesInfo(selectedSeries).startDate}&ndash;{getSeriesInfo(selectedSeries).endDate}, 2026</p>
                             <p className="text-nowrap">vs. {getSeriesInfo(selectedSeries).opponent}</p>
-                            <p className="text-nowrap">{getSeriesInfo(selectedSeries).totalGames} Games ({getSeriesInfo(selectedSeries).wins}W-{getSeriesInfo(selectedSeries).losses}L)</p>
+                            <p className="text-nowrap">{getSeriesInfo(selectedSeries).totalGames} Games ({getSeriesInfo(selectedSeries).wins}<span className="text-green-500 font-bold font-inter">W</span>-{getSeriesInfo(selectedSeries).losses}<span className="text-red-500 font-bold font-inter">L</span>)</p>
                             
                         </div>}
                         {level === "game" && <div className="text-center">
@@ -900,7 +908,7 @@ export default function MapView({ theme, mode, setMode }) {
 
                 {/* STORY */}
                 {(mode === "visualization") && <div 
-                    className={`absolute z-1002 top-0 left-0 w-full md:w-1/3 text-white text-sm lg:text-base transition-opacity duration-300 ${isOpen && "opacity-0"} ${showVisualization ? "translate-y-0" : "translate-y-13.5 md:translate-y-0 md:-translate-x-[calc(100%-120px)] w-min!"}`}
+                    className={`absolute z-1002 top-0 left-0 w-full md:w-1/2 xl:w-1/3 text-white text-sm lg:text-base transition-opacity duration-300 ${isOpen && "opacity-0"} ${showVisualization ? "translate-y-0" : "translate-y-13.5 md:translate-y-0 md:-translate-x-[calc(100%-120px)] w-min!"}`}
                 >
                     <div className="m-2.5 relative px-5 pt-7 pb-3 rounded-none border-2 border-neutral-500 bg-white/95 dark:bg-black/90 text-black dark:text-neutral-100 font-rale text-center">
                         <button className="absolute top-1 right-1 p-2 text-3xl cursor-pointer" onClick={()=>setShowVisualization(!showVisualization)} title={showVisualization ? "Hide" : "Show"}>
@@ -929,7 +937,7 @@ export default function MapView({ theme, mode, setMode }) {
                                 Zoom and pan across NYC, or hover over a zone to see its trip volume. Visit the <button className="cursor-pointer text-blue-500 font-semibold hover:underline" onClick={()=>setMode("analysis")}>Analysis</button> section to explore the data further, or <button className="cursor-pointer text-blue-500 font-semibold hover:underline" onClick={()=>setMode("about")}>Methodology</button> to see how the data was prepared.
                             </p>}
                             <div className="relative w-full flex items-center h-8 mt-2 mx-2">
-                                {page !== 1 && <button className="absolute left-0 cursor-pointer p-0.5" onClick={()=>{
+                                {page !== 1 && <button className="absolute left-0 cursor-pointer p-0.5" aria-label="Previous page" onClick={()=>{
                                     setPage(page === 1 ? 2 : page - 1);
                                 }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -939,7 +947,7 @@ export default function MapView({ theme, mode, setMode }) {
                                 <span className="text-xs absolute left-[50%] translate-x-[-50%]">
                                     <strong>{page} of 2</strong>
                                 </span>
-                                {page !== 2 ? <button className="absolute right-0 cursor-pointer p-0.5" onClick={()=>{
+                                {page !== 2 ? <button className="absolute right-0 cursor-pointer p-0.5" aria-label="Next page" onClick={()=>{
                                     setPage(page === 2 ? 1 : page + 1)
                                 }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -1058,18 +1066,18 @@ export default function MapView({ theme, mode, setMode }) {
                 {(mode === "about" && showAbout) && <div 
                     className={`absolute z-1002 top-0 left-0 w-full h-full flex justify-center items-center backdrop-blur-sm bg-white/90 dark:bg-black/90 text-black dark:text-neutral-100 text-sm py-6`}
                 >
-                    <div className="relative w-full sm:w-1/3 h-full font-rale overflow-y-auto scrollbar-gutter-both scrollbar-thin scrollbar-thumb-neutral-500 flex flex-col gap-2 px-4">
+                    <div className="relative w-full max-w-xl h-full font-rale overflow-y-auto scrollbar-gutter-both scrollbar-thin scrollbar-thumb-neutral-500 flex flex-col gap-2 px-4">
                         <h1 className="text-xl font-bold text-center">Knicks in Motion</h1>
                         <p>
-                            Game-related activity is identified using pickup and drop-off locations in relation to monitored locations associated with each game. The time windows were selected to capture the observed range of typical game-day activity around tipoff and the end of games. The two-hour pregame window was chosen to encompass the range of average arrival times observed before games, while the three-hour postgame window was chosen to capture the range of activity following games, including the time associated with postgame travel, lingering, and celebration. During the two hours before tipoff, trips arriving at a monitored location are used to represent where vehicles traveled from. During the three hours after a game ends, trips departing from a monitored location are used to represent where vehicles traveled afterward. The resulting trips are aggregated by NYC taxi zone and displayed as raw trip volumes on the map.
+                            Game-related activity is identified by matching pickup and drop-off locations to monitored locations during defined time windows. The two-hour pregame window captures vehicle arrivals before tipoff, while the three-hour postgame window captures departures after the game ends, including potential postgame travel, lingering, and celebration. For pregame activity, trips arriving at a monitored location are used to identify where vehicles traveled from, with the pickup zone recorded as the origin. For postgame activity, trips departing from a monitored location are used to identify where vehicles traveled afterward, with the drop-off zone recorded as the destination. These trips are aggregated by NYC taxi zone and displayed as raw trip volumes on the map.
                             <br/><br/>
-                            The underlying trip records were first collected from the 2026 TLC Yellow Taxi, Green Taxi, and High Volume For-Hire Vehicle (FHVHV) datasets and processed to retain the fields necessary for the analysis, including pickup and drop-off timestamps, taxi type, and TLC taxi zones. The raw records were then cleaned and filtered to remove records that could not be meaningfully used in the analysis. Game information, including tipoff times, opponents, locations, results, and game durations, was combined with the trip data to establish the temporal boundaries for each analysis period. Individual trips were then matched to the defined pregame and postgame windows for each game and retained when they were associated with a monitored location for that particular game. For pregame periods, trips were matched using their drop-off location at a monitored location and their pickup zone was retained as the origin. For postgame periods, trips were matched using their pickup location at a monitored location and their drop-off zone was retained as the destination.
+                            The analysis uses the 2026 NYC Taxi and Limousine Commission (TLC) Yellow Taxi, Green Taxi, and High Volume For-Hire Vehicle (FHVHV) datasets. The raw trip records were cleaned and filtered to retain usable data, including pickup and drop-off timestamps, taxi type, and TLC taxi zones. Game information, such as tipoff times, opponents, locations, results, and game durations, was then combined with the trip data to define the analysis windows for each game. Trips were matched to these windows and retained when they were associated with a monitored location relevant to that game.
                             <br/><br/>
-                            The processed trips were subsequently grouped by game, time period, taxi type, monitored location, and NYC taxi zone. These groups were aggregated into raw trip counts and exported into structured datasets used by the visualization. This preprocessing reduced the large collection of individual trip records into game-level and zone-level data that could be loaded and filtered interactively in the application. Madison Square Garden is monitored throughout the playoff run, while Central Park, Radio City Music Hall, Bryant Park, and Brooklyn Bowl are included for specific games where relevant.
+                            The resulting records were grouped by game, time period, taxi type, monitored location, and NYC taxi zone, then aggregated into raw trip counts. These processed datasets were exported in structured formats for use in the interactive visualization, allowing users to filter activity by game, series, playoff stage, taxi type, and location. Madison Square Garden is monitored throughout the playoff run, while Central Park, Radio City Music Hall, Bryant Park, and Brooklyn Bowl are included for specific games where relevant.
                             <br/><br/>
-                            The visualization includes Yellow Taxi, Green Taxi, and High Volume For-Hire Vehicle (FHVHV) records from the 2026 TLC trip datasets. Game information, including tipoff times, opponents, locations, results, and game durations, is used to define the temporal boundaries of each analysis period. The data provides a view of vehicle activity, rather than a direct measurement of people or Knicks fans. Individual trips do not indicate whether a passenger attended a game, was a Knicks fan, or was traveling specifically because of a game or watch party. Similarly, away games can still generate substantial activity in New York City through watch parties and other events. The results should therefore be interpreted as trip activity associated with selected locations and time periods, rather than a direct measurement of attendance, fan movement, or game-caused traffic.
+                            This analysis measures vehicle trip activity, not people, attendance, or fan movement. Individual trips cannot establish whether a passenger attended a game, supported the Knicks, or traveled specifically because of a game or watch party. Away games may also generate activity in New York City through watch parties and other events. The results should therefore be interpreted as trip activity associated with selected locations and time periods, rather than as a direct measure of game-caused traffic or other game-related effects.
                             <br/><br/>
-                        </p>
+                        </p> 
                         <div className="flex flex-col gap-1 items-start text-sm">
                             <h2 className="text-lg font-bold">Sources & References</h2>
 
@@ -1077,7 +1085,7 @@ export default function MapView({ theme, mode, setMode }) {
                                 <summary className="cursor-pointer font-bold my-1">
                                     Map Data
                                 </summary>
-                                <div className="flex flex-col gap-0.5 pl-3">
+                                <div className="flex flex-col gap-1 pl-3">
                                     <div>
                                         <a
                                             href="https://visgl.github.io/react-map-gl/"
@@ -1132,7 +1140,7 @@ export default function MapView({ theme, mode, setMode }) {
                                 <summary className="cursor-pointer font-bold my-1">
                                     Game Data
                                 </summary>
-                                <div className="flex flex-col gap-0.5 pl-3">
+                                <div className="flex flex-col gap-1 pl-3">
                                     <a
                                         href="https://www.basketball-reference.com/teams/NYK/2026_games.html#all_games_playoffs"
                                         target="_blank"
@@ -1148,7 +1156,15 @@ export default function MapView({ theme, mode, setMode }) {
                                 <summary className="cursor-pointer font-bold my-1">
                                     Trip Data & Documentation
                                 </summary>
-                                <div className="flex flex-col gap-0.5 pl-3">
+                                <div className="flex flex-col gap-1 pl-3">
+                                    <a
+                                        href="https://data.cityofnewyork.us/d/8meu-9t5y"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-blue-500 underline"
+                                    >
+                                        NYC Open Data — Taxi Zones
+                                    </a>
                                     <a
                                         href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page"
                                         target="_blank"
@@ -1188,7 +1204,15 @@ export default function MapView({ theme, mode, setMode }) {
                                 <summary className="cursor-pointer font-bold my-1">
                                     Additional References
                                 </summary>
-                                <div className="flex flex-col gap-0.5 pl-3">
+                                <div className="flex flex-col gap-1 pl-3">
+                                <a
+                                    href="https://www.nyc.gov/mayors-office/news/2026/06/mayor-mamdani-announces-additional-knicks-watch-party-location-a"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-blue-500 underline"
+                                >
+                                    NYC Mayor's Office — Additional Knicks Watch Party at Bryant Park
+                                </a>
                                     <a
                                         href="https://www.governor.ny.gov/news/go-new-york-go-governor-hochul-announces-mta-preserve-iconic-orange-and-blue-subway-entrance"
                                         target="_blank"
@@ -1235,24 +1259,18 @@ export default function MapView({ theme, mode, setMode }) {
                     </div>
                 </div>}
 
-                {/* SHOW ATTRIBUTION */}
-                {/* <button className="absolute bottom-5 right-2.5 text-black bg-white z-1001 rounded-sm border-[#ddd] border cursor-pointer" title="Show attribution" onClick={()=>setShowAttribution(!showAttribution)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
-                    </svg>
-                </button>
-                {showAttribution && <div className="text-xs absolute bottom-0 right-0 px-1 text-black bg-white dark:bg-black dark:text-neutral-300 w-max">
-                    <a href="https://openfreemap.org/" target="_blank" rel="noopener noreferrer">OpenFreeMap</a>
-                    &nbsp;&copy;&nbsp;
-                    <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener noreferrer">OpenMapTiles</a> 
-                    {" Data from "}
-                    <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
-                </div>} */}
+                <div className="absolute bottom-0 right-0 z-1001 px-1 text-xs bg-white text-black dark:bg-black dark:text-neutral-300">
+                    <a href="https://openfreemap.org/">OpenFreeMap</a>
+                    {" © "}
+                    <a href="https://www.openmaptiles.org/">OpenMapTiles</a>
+                    {" © "}
+                    <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
+                </div>
 
                 {/* LEGEND */}
                 <div className="absolute bottom-1 left-1 border border-neutral-500 flex justify-center items-center p-1 text-xs font-mont font-semibold bg-white/90 text-black dark:bg-black/90 dark:text-white">
                     <div className="mr-1.5">Low</div>
-                    {colors.map(color => <div className="size-4" style={{ 
+                    {colors.map((color, i) => <div key={i} className="size-4" style={{ 
                         background: `${color}`,
                         border: `1px solid ${lineColor}`
                     }}/>)}
@@ -1262,7 +1280,7 @@ export default function MapView({ theme, mode, setMode }) {
                 {/* CENTER BUTTON */}
                 <button
                     title="Center map"
-                    className={`absolute z-1001 bottom-26 right-2 text-sm font-bold bg-white text-black cursor-pointer rounded-md p-1 border-neutral-400 box-border border-2`}
+                    className={`absolute z-1001 bottom-30 right-2 text-sm font-bold bg-white text-black cursor-pointer rounded-md p-1 border-neutral-400 box-border border-2`}
                     onClick={() => {
                         mapRef.current?.fitBounds(maxBounds, {
                             pitch: 0,
@@ -1279,6 +1297,7 @@ export default function MapView({ theme, mode, setMode }) {
                 {/* SIDEBAR */}
                 <div className={`top-2.5 left-2.5 absolute flex flex-col z-1002 ${mode === "about" && "hidden"}`}>
                     <button 
+                    aria-label="Filters"
                     onClick={()=>{
                         setIsOpen(!isOpen);
                     }}
@@ -1377,20 +1396,18 @@ export default function MapView({ theme, mode, setMode }) {
                                     </label>
                                     <div className="flex gap-1.5 text-sm w-full items-center text-nowrap flex-wrap">
                                         {availableLocations.map(location => (
-                                                <button
-                                                    className={`flex items-center gap-1 bg-blue hover:bg-blue-700 cursor-pointer text-neutral-200 px-2 ${!selectedLocations.includes(location.id) && "opacity-50"}`}
-                                                    key={location.id}
-                                                    onClick={() => {
-                                                        setSelectedLocations(prev =>
-                                                            prev.includes(location.id)
-                                                                ? prev.filter(id => id !== location.id)
-                                                                : [...prev, location.id]
-                                                        );
-                                                    }}
-                                                >
-                                                    <div className={`${!selectedLocations.includes(location.id) && "line-through"}`}>{location.name}</div>
-                                                    <div className="text-lg text-white">&times;</div>
-                                                </button>
+                                            <button
+                                            key={location.id}
+                                            aria-pressed={selectedLocations.includes(location.id)}
+                                            className={`px-2 py-0.5 border transition-all duration-100 cursor-pointer ${
+                                                selectedLocations.includes(location.id) ? "bg-blue text-white border-blue" : "bg-transparent text-blue border-blue/40 line-through"
+                                            }`}
+                                            onClick={() => setSelectedLocations(prev =>
+                                                selectedLocations.includes(location.id) ? prev.filter(id => id !== location.id) : [...prev, location.id]
+                                            )}
+                                          >
+                                            {location.name}
+                                          </button>
                                         ))}
                                     </div>
                                 </div>
@@ -1434,15 +1451,15 @@ export default function MapView({ theme, mode, setMode }) {
 
                                 <label className="flex flex-col">
                                     Intensity
-                                    <div className="flex gap-2">
-                                        <input type="range" min={4} max={8} value={intensity} onChange={(e)=>setIntensity(Number(e.target.value))} className="w-min"/>
+                                    <div className="flex gap-2 items-center">
+                                        <input type="range" min={4} max={8} value={intensity} onChange={(e)=>setIntensity(Number(e.target.value))} className="w-min accent-orange"/>
                                         <div>{(intensity === 4 || intensity === 5) ? "Low" : intensity === 8 ? "High" : "Medium"}</div>
                                     </div>
                                 </label>
 
                                 <label className="flex flex-col">
                                     Opacity
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 items-center">
                                         <input type="range" min={0} max={100} step={1} value={fillOpacity} onChange={(e)=>setFillOpacity(Number(e.target.value))} className="w-min"/>
                                         <div>{fillOpacity}%</div>
                                     </div>
@@ -1462,7 +1479,7 @@ export default function MapView({ theme, mode, setMode }) {
                                     setSelectedLocations(DEFAULT_LOCATIONS);
                                     setStartColor("#006BB6");
                                     setEndColor("#F58426");
-                                    setLineColor("white")
+                                    setLineColor(document.documentElement.classList.contains("dark") ? "#ffffff" : "#292524");
                                     setIntensity(6);
                                     setFillOpacity(75);
                                 }}

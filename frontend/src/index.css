@@ -8,9 +8,8 @@
   --font-mont: "Montserrat", sans-serif;
   --font-inter: "Inter", sans-serif;
   --font-oswald: "Oswald", sans-serif;
-  --font-econ: "Economica", sans-serif;
   --font-rale: "Raleway", sans-serif;
-  --font-lato: "Lato", sans-serif;
+  --font-econ: "Economica", sans-serif;
   --color-blue: #0062CF;
   --color-orange: #EB6800;
   --color-yellow: #F6BC26;
@@ -44,6 +43,47 @@ input {
   padding: 0;
 }
 
-/* .maplibregl-ctrl-bottom-right {
-  margin-bottom: 48px;
-} */
+.maplibregl-ctrl-bottom-right {
+  margin-bottom: 16px;
+}
+
+input[type="range"] {
+  appearance: none;
+  height: 1.25rem;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: #a3a3a3;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: 999px;
+  @apply bg-blue
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border: none;
+  border-radius: 999px;
+  background: #a3a3a3;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 999px;
+  @apply bg-blue
+}
+
+.dark input[type="range"]::-webkit-slider-runnable-track,
+.dark input[type="range"]::-moz-range-track {
+  background: #525252;
+}
