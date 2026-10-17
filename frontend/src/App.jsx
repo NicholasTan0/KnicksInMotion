@@ -5,6 +5,7 @@ import Dropdown from './components/Dropdown';
 function App() {
   const [hover, setHover] = useState(false);
   const [mode, setMode] = useState("visualization");
+  const [story, setStory] = useState(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") || "auto"
@@ -36,7 +37,10 @@ function App() {
         </div>
         <nav className='hidden md:flex w-1/3 justify-center items-center gap-4 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-32 text-sm md:text-base lg:text-lg xl:text-xl font-econ tracking-wider uppercase'>
           <button onClick={()=>setMode("visualization")} className={`w-1/3 text-center cursor-pointer box-border ${mode === "visualization" && "border-b-2"}`}>Visualization</button>
-          <button onClick={()=>setMode("analysis")} className={`w-1/3 text-center cursor-pointer box-border ${mode === "analysis" && "border-b-2"}`}>Analysis</button>
+          <button onClick={()=>{
+            if(mode === "analysis") setStory(null);
+            else setMode("analysis");
+          }} className={`w-1/3 text-center cursor-pointer box-border ${mode === "analysis" && "border-b-2"}`}>Analysis</button>
           <button onClick={()=>setMode("about")} className={`w-1/3 text-center cursor-pointer box-border ${mode === "about" && "border-b-2"}`}>Methodology</button>
         </nav>
         <div className="hidden md:flex w-1/3 justify-end items-center">
@@ -62,11 +66,28 @@ function App() {
         </div>
       </header>
 
-      <Map 
-        theme={theme}
-        mode={mode}
-        setMode={setMode}
-      />
+      <div className='flex w-full h-[calc(100vh-56px)]'>
+        {(mode === "analysis" && story) && <aside className={`flex flex-col w-full max-w-125 md:w-1/3 md:border-r border-neutral-600 text-black dark:text-neutral-200 font-rale p-8 gap-2 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-500`}>
+          <button onClick={()=>setStory(null)} className='cursor-pointer uppercase text-base flex items-center gap-2 w-min'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+            </svg>
+            Story
+          </button>
+          <h1 className='font-bold text-3xl my-1'>{story?.title} {story?.id}</h1>
+          <h3 className='text-sm my-1'>{story?.text}</h3>
+          <hr className='my-3'/>
+          {/* <button onClick={()=>setStory(null)}>Back</button> */}
+          {story?.data}
+        </aside>}
+        <Map 
+          theme={theme}
+          mode={mode}
+          setMode={setMode}
+          story={story}
+          setStory={setStory}
+        />
+      </div>
     </div>
   )
 }
