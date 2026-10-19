@@ -15,8 +15,8 @@ export default function Airports(){
                 </div>
             </div>
 
-            <blockquote className="border-l-4 border-orange pl-4">
-                <p className="text-base italic">
+            <blockquote className="border-l-4 border-orange pl-4 my-2">
+                <p className="text-sm italic">
                     “Although the [Federal Aviation Administration] does not track Knicks-related travel separately, aviation professionals are seeing many of the same trends that accompany major sporting events.
                     Fans traveling to road games, national media covering the team, corporate sponsors, and business travelers attending playoff events all contribute to increased airline bookings. ”
                 </p>
@@ -37,9 +37,9 @@ export default function Airports(){
                 </footer>
             </blockquote>
 
-            <blockquote className="border-l-4 border-orange-500 pl-4">
-                <p className="text-base italic leading-relaxed">
-                    “Codd is committed to making the trip... He arrives Monday morning in New York, will attend
+            <blockquote className="border-l-4 border-orange-500 pl-4 my-2">
+                <p className="text-sm italic leading-relaxed">
+                    “He arrives Monday morning in New York, will attend
                     Game 3 that night, and go right from MSG back to the airport... and fly home on the first flight out Tuesday
                     morning. No other plans, no hotel.”
                 </p>

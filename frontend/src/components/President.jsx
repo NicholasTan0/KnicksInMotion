@@ -9,7 +9,7 @@ export default function Percentages(){
             <div className="flex flex-col gap-1.5">
                 <div className="text-2xl font-bold">104 trips → <span className="text-lg">Madison Square Garden</span></div>
                 <div className="flex gap-1 text-sm">
-                    <div className="text-red-500">-69.1%</div>
+                    <div className="text-red-500">▼ -69.1%</div>
                     <div className="text-neutral-600 dark:text-neutral-400">finals average</div>
                 </div>
             </div>
@@ -17,7 +17,7 @@ export default function Percentages(){
             <div className="flex flex-col gap-1.5">
                 <div className="text-2xl font-bold">1,433 trips → <span className="text-lg">Bryant Park + Brooklyn Bowl</span></div>
                 <div className="flex gap-1 text-sm">
-                    <div className="text-green-500">~83.6%</div>
+                    <div className="text-orange">83.6%</div>
                     <div className="text-neutral-600 dark:text-neutral-400">of Game 3 trips</div>
                 </div>
             </div>

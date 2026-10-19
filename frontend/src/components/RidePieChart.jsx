@@ -60,7 +60,7 @@ export default function RidePieChart({
       style={{
         width: "100%",
         // maxWidth: "500px",
-        // maxHeight: "80vh",
+        maxHeight: "370px",
         aspectRatio: 1,
         // margin: "0 auto",
       }}

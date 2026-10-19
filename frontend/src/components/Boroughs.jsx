@@ -10,8 +10,7 @@ const data = {
 export default function Boroughs(){
     return (
         <div className="grid grid-rows-1 gap-4">
-
-            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-black dark:border-white text-white dark:text-black">
+            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-[green] text-white dark:text-black transition-transform hover:scale-101">
                 <img src="/src/assets/manhattan.jpg" alt="Image" className="w-7/10 h-3/5 object-cover object-center" />
                 <div className="absolute inset-y-0 left-[30%] w-1/3 bg-linear-to-r from-current to-transparent"></div>
                 <div className="absolute inset-x-0 bottom-[40%] h-1/2 bg-linear-to-t from-current to-transparent"></div>
@@ -26,7 +25,7 @@ export default function Boroughs(){
                     <p>The highest activity was in Manhattan, with trips centered around Madison Square Garden and surrounding neighborhoods.</p>
                 </div>
             </div>
-            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-black dark:border-white text-white dark:text-black">
+            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-[yellow] text-white dark:text-black transition-transform hover:scale-101">
                 <img src="/src/assets/brooklyn.jpg" alt="Image" className="w-7/10 h-3/5 object-cover object-center" />
                 <div className="absolute inset-y-0 left-[30%] w-1/3 bg-linear-to-r from-current to-transparent"></div>
                 <div className="absolute inset-x-0 bottom-[40%] h-1/2 bg-linear-to-t from-current to-transparent"></div>
@@ -41,7 +40,7 @@ export default function Boroughs(){
                     <p>Brooklyn had substantial activity, particularly in northern neighborhoods and areas near the waterfront (e.g. Brooklyn Bowl).</p>
                 </div>
             </div>
-            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-black dark:border-white text-white dark:text-black">
+            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-[orange] text-white dark:text-black transition-transform hover:scale-101">
                 <img src="/src/assets/queens.jpg" alt="Image" className="w-7/10 h-3/5 object-cover object-center" />
                 <div className="absolute inset-y-0 left-[30%] w-1/3 bg-linear-to-r from-current to-transparent"></div>
                 <div className="absolute inset-x-0 bottom-[40%] h-1/2 bg-linear-to-t from-current to-transparent"></div>
@@ -56,7 +55,7 @@ export default function Boroughs(){
                     <p>Queens saw notable volume overall, especially due to containing both major NYC airports. Activity was scattered relatively evenly within the borough.</p>
                 </div>
             </div>
-            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-black dark:border-white text-white dark:text-black">
+            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-[red] text-white dark:text-black transition-transform hover:scale-101">
                 <img src="/src/assets/bronx.jpg" alt="Image" className="w-7/10 h-3/5 object-cover object-center" />
                 <div className="absolute inset-y-0 left-[30%] w-1/3 bg-linear-to-r from-current to-transparent"></div>
                 <div className="absolute inset-x-0 bottom-[40%] h-1/2 bg-linear-to-t from-current to-transparent"></div>
@@ -71,7 +70,7 @@ export default function Boroughs(){
                     <p>The Bronx saw a decent share of trips with just over one thousand, however taking the subway down to Manhattan may have been more preferable.</p>
                 </div>
             </div>
-            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-black dark:border-white text-white dark:text-black">
+            <div className="relative w-full min-h-62.5 flex justify-end overflow-hidden rounded-3xl border-2 border-[purple] text-white dark:text-black transition-transform hover:scale-101">
                 <img src="/src/assets/statenisland.jpg" alt="Image" className="w-7/10 h-3/5 object-cover object-center" />
                 <div className="absolute inset-y-0 left-[30%] w-1/3 bg-linear-to-r from-current to-transparent"></div>
                 <div className="absolute inset-x-0 bottom-[40%] h-1/2 bg-linear-to-t from-current to-transparent"></div>

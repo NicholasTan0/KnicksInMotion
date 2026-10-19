@@ -15,6 +15,7 @@ import Airports from "./Airports";
 import Services from "./Services";
 import HomeCourt from "./HomeCourt";
 import Boroughs from "./Boroughs";
+import Postgame from "./Postgame";
 maplibregl.setWorkerUrl(workerUrl);
 
 const MSG = [-73.99361, 40.75056];
@@ -143,90 +144,6 @@ const locations = [
     },
 ];
 
-const stories = [
-    {
-        src: '/src/assets/msg_day.jpg',
-        orientation: "object-center",
-        id: 8,
-        title: "The Road to Tipoff",
-        description: "Where were pickups happening before tipoff? Explore pickup locations for trips headed to MSG and other Knicks-related destinations in the hours leading up to games."
-    },
-    {
-        src: '/src/assets/postgame.jpg',
-        orientation: "object-center",
-        id: 4,
-        title: "Postgame Pursuits",
-        description: "When the game ends, where does the ride activity go? Follow postgame drop-offs to see which neighborhoods and destinations drew the most trips.",
-        text: `Let's shift our focus to where trips traveled to after the buzzer sounds. These trips highlight the destinations that saw the most activity in the 3 hours following
-            the end of the game. Aside from the majority of fans flooding the streets surrounding MSG, the zones with the highest volumes of trips were East Village and Murray Hill. 
-            Both are major late-night neighborhoods due to their high concentration of bars, restaurants, and general nightlife activities. Several other neighborhoods within Manhattan 
-            also received similar attention, such as Upper East Side, West Village, and Hell's Kitchen.`
-    },
-    {
-        data: <Services/>,
-        src: '/src/assets/msg_taxi.webp',
-        orientation: "object-bottom",
-        id: 5,
-        title: "A Dying Service?",
-        description: "Taxis and Uber/Lyft compete for a place in New York City's streets. Compare their recorded trip activity around playoff games.",
-        text: `Another interesting statistical trend that can be examined is the usage of taxi (yellow and green) vs. ride-share (Uber and Lyft) services. As you can see, the map becomes 
-            much more sparse when filtering for taxi rides only, comprising of only 29% of all pregame rides. However, this number jumps to around 41% for postgame rides, most likely 
-            due the availability and sheer amount of taxis in Manhattan. Although taxis are nowhere near extinct, it is clear that most riders opted to take an Uber or Lyft instead
-            throughout the playoffs.`
-    },
-    {
-        data: <HomeCourt/>,
-        src: '/src/assets/msg.webp',
-        orientation: "object-bottom",
-        id: 6,
-        title: "There's No Place Like Home",
-        description: "Did the city's ride activity look different when the Knicks played at home versus on the road? Compare the recorded trip patterns across both types of game nights.",
-        text: `As expected, home games generated roughly 2,000 more pregame trips than away games, with over 74% going to Madison Square Garden. After the games, however, the difference 
-            largely disappears, with away games actually producing slightly more postgame trips overall. This may reflect the broader NYC activity captured by the three-hour postgame window, 
-            including watch parties, nightlife, and other trips unrelated to the game itself (e.g. evening rush hour). Much like the Knicks' championship run, home-court advantage seems to 
-            have been completely optional, as they went 9–1 on the road and closed out every series away from home. Our data tells a similar story: home and away games produced 
-            remarkably similar levels of postgame trip activity.`
-    },
-    {
-        src: '/src/assets/crowd.jpg',
-        orientation: "object-bottom",
-        id: 7,
-        title: "Playoff Fever or Just New York?",
-        description: "Not every busy night is a playoff night. Use regular-season games and non-game days as reference points for understanding the activity surrounding the postseason."
-    },
-    {
-        data: <Percentages/>,
-        src: '/src/assets/president.webp',
-        orientation: "object-top",
-        id: 3,
-        title: "President's Day",
-        description: "A presidential visit brought added attention to New York on Finals night. Did the surrounding streets see a different pattern of pickup and drop-off activity?",
-        text: `President Donald Trump attended Game 3 of the 2026 NBA Finals at Madison Square Garden, becoming the first sitting U.S. president to attend an NBA Finals game.
-            By applying the right filters, we can examine the impact that his presence had on trips throughout NYC on this day. There was a 20% decrease in the number 
-            of trips going to MSG compared to the other games in the Finals, most likely due to the street closures and cancellation of the outdoor watch party. Conversely, 
-            there was a large number of trips going to Central Park (Wollman Rink), Bryant Park and Brooklyn Bowl, the other team-sanctioned watch party locations.
-            In fact, nearly half of all trips were headed to Brooklyn Bowl before tipoff of Game 3.`
-    },
-    {
-        data: <Boroughs/>,
-        src: '/src/assets/night.jpg',
-        orientation: "object-top",
-        id: 9,
-        title: "Borough Breakdown",
-        description: "Where does Knicks playoff ride activity reach beyond the Garden's home borough? Explore how trips are distributed across the five boroughs.",
-        text: `The five boroughs all saw varied levels of total trip activity throughout the playoffs.`
-    },
-    {
-        data: <Airports/>,
-        src: '/src/assets/knicks_airplane.webp',
-        orientation: "object-top",
-        id: 2,
-        title: "Knicks Fans Travel Well",
-        description: "How far do fans travel to catch a playoff game? Trace pregame rides originating at JFK and LaGuardia to explore how New York's airports connect to Knicks game nights.",
-        text: `A notable pattern is the flow of airport-originating trips to Knicks game-day destinations. Nearly 1,000 trips from JFK and LaGuardia reached MSG within two hours before tipoff, highlighting the airports as significant sources of pregame traffic.`
-    },
-];
-
 const funFacts = [
     "The Knicks set an NBA playoff record with a 47-point halftime lead against the Atlanta Hawks.",
     "The Knicks won 13 consecutive postseason games, tying the 2017 Warriors for the second-longest streak in NBA playoff history.",
@@ -287,6 +204,94 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
     const [random, setRandom] = useState(Math.floor(Math.random() * funFacts.length));
     const [showVisualization, setShowVisualization] = useState(true);
     const [showInformation, setShowInformation] = useState(true);
+
+    const stories = [
+        {
+            data: <Postgame/>,
+            src: '/src/assets/postgame.jpg',
+            orientation: "object-center",
+            id: 4,
+            title: "Postgame Pursuits",
+            description: "When the game ends, where does the ride activity go? Follow postgame drop-offs to see which neighborhoods and destinations drew the most trips.",
+            text: `Let's shift our focus to where trips traveled after the buzzer sounds. In the three hours following each game, activity extended beyond MSG, with East Village (675 trips) 
+            and Murray Hill (655) leading destinations outside the immediate arena area. These neighborhoods, along with the Upper East Side, West Village, and Hell's Kitchen, may have 
+            attracted people heading out for nightlife or returning home. This pattern aligns with broader reports of a playoff-driven boost to NYC's nightlife economy: Forbes highlighted 
+            increased business at nearby bars and restaurants, while a New York Hospitality Alliance survey reported by the New York Post found that 90% of roughly 100 hospitality businesses 
+            surveyed saw increased sales during the Knicks' playoff and Finals run. While trip data cannot confirm travelers' purposes or establish a direct economic impact, it offers a 
+            glimpse into how game nights extended into the wider city.`
+        },
+        {
+            data: <Services setSelectedPeriod={setSelectedPeriod}/>,
+            src: '/src/assets/msg_taxi.webp',
+            orientation: "object-bottom",
+            id: 5,
+            title: "A Dying Service?",
+            description: "Taxis and Uber/Lyft compete for a place in New York City's streets. Compare their recorded trip activity around playoff games.",
+            text: `Another interesting statistical trend that can be examined is the usage of taxi (yellow and green) vs. ride-share (Uber and Lyft) services. As you can see, the map becomes 
+                much more sparse when filtering for taxi rides only, comprising of only 29% of all pregame rides. However, this number jumps to around 41% for postgame rides, most likely 
+                due the availability and sheer amount of taxis in Manhattan. Although taxis are nowhere near extinct, it is clear that most riders opted to take an Uber or Lyft instead
+                throughout the playoffs.`
+        },
+        {
+            data: <HomeCourt setSelectedPeriod={setSelectedPeriod}/>,
+            src: '/src/assets/msg.webp',
+            orientation: "object-bottom",
+            id: 6,
+            title: "There's No Place Like Home",
+            description: "Did the city's ride activity look different when the Knicks played at home versus on the road? Compare the recorded trip patterns across both types of game nights.",
+            text: `As expected, home games generated roughly 2,000 more pregame trips than away games, with over 74% going to Madison Square Garden. After the games, however, the difference 
+                largely disappears, with away games actually producing slightly more postgame trips overall. This may reflect the broader NYC activity captured by the three-hour postgame window, 
+                including watch parties, nightlife, and other trips unrelated to the game itself (e.g. evening rush hour). Much like the Knicks' championship run, home-court advantage seems to 
+                have been completely optional, as they went 9–1 on the road and closed out every series away from home. Our data tells a similar story: home and away games produced 
+                remarkably similar levels of postgame trip activity.`
+        },
+        {
+            data: <Percentages/>,
+            src: '/src/assets/president.webp',
+            orientation: "object-top",
+            id: 3,
+            title: "President's Day",
+            description: "A presidential visit brought added attention to New York on Finals night. Did the surrounding streets see a different pattern of pickup and drop-off activity?",
+            text: `President Donald Trump attended Game 3 of the 2026 NBA Finals at Madison Square Garden, becoming the first sitting U.S. president to attend an NBA Finals game.
+                By applying the right filters, we can examine the impact that his presence had on trips throughout NYC on this day. There was a 20% decrease in the number 
+                of trips going to MSG compared to the other games in the Finals, most likely due to the street closures and cancellation of the outdoor watch party. Conversely, 
+                there was a large number of trips going to Central Park (Wollman Rink), Bryant Park and Brooklyn Bowl, the other team-sanctioned watch party locations.
+                In fact, nearly half of all trips were headed to Brooklyn Bowl before tipoff of Game 3.`
+        },
+        {
+            data: <Boroughs/>,
+            src: '/src/assets/night.jpg',
+            orientation: "object-top",
+            id: 9,
+            title: "Borough Breakdown",
+            description: "Where does Knicks playoff ride activity reach beyond the Garden's home borough? Explore how trips are distributed across the five boroughs.",
+            text: `The five boroughs all saw varied levels of total trip activity throughout the playoffs.`
+        },
+        {
+            data: <Airports/>,
+            src: '/src/assets/knicks_airplane.webp',
+            orientation: "object-top",
+            id: 2,
+            title: "Knicks Fans Travel Well",
+            description: "How far do fans travel to catch a playoff game? Trace pregame rides originating at JFK and LaGuardia to explore how New York's airports connect to Knicks game nights.",
+            text: `A notable pattern is the flow of airport-originating trips to Knicks game-day destinations. Nearly 1,000 trips from JFK and LaGuardia reached MSG within two hours before tipoff, highlighting the airports as significant sources of pregame traffic.`
+        },
+        {
+            src: '/src/assets/pregame.jpg',
+            orientation: "object-bottom",
+            id: 8,
+            title: "[COMING SOON] - The Road to Tipoff",
+            description: "Where were pickups happening before tipoff? Explore pickup locations for trips headed to MSG and other Knicks-related destinations in the hours leading up to games."
+        },
+        {
+            src: '/src/assets/crowd.jpg',
+            orientation: "object-bottom",
+            id: 7,
+            title: "[COMING SOON] - Playoff Fever or Just New York?",
+            description: "Not every busy night is a playoff night. Use regular-season games and non-game days as reference points for understanding the activity surrounding the postseason."
+        },
+    ];
+
     
     useEffect(() => {
         const ac = new AbortController();
@@ -385,6 +390,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                         center: [(JFK[0] + LGA[0]) / 2, (JFK[1] + LGA[1]) / 2],
                         zoom: 11,
                         pitch: 0,
+                        bearing: 0,
                         offset: [150, 0],
                         duration: 2000,
                     });
@@ -415,7 +421,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                 } else if (story?.id === 4) {
                     map.flyTo({
                         center: MSG,
-                        offset: [-100, 0],
+                        offset: [0, 100],
                         zoom: 12,
                         bearing: 29,
                         pitch: 0,
@@ -447,7 +453,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                     map.flyTo({
                         center: MSG,
                         zoom: 16,
-                        pitch: 65,
+                        pitch: 39,
                         bearing: 67,
                         duration: 2000,
                     });
@@ -1212,10 +1218,11 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                         {stories.map((s) => (
                             <button
                                 key={s.id}
+                                disabled={s.id === 7 || s.id === 8}
                                 onClick={() => {
                                     setStory(s);
                                 }}
-                                className="rounded-3xl overflow-hidden border-2 flex flex-col cursor-pointer"
+                                className="rounded-3xl overflow-hidden border-2 flex flex-col cursor-pointer disabled:grayscale disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <div className='h-48 w-full border-b-2'>
                                     <img src={s.src} loading='lazy' className={`w-full h-full object-cover ${s.orientation}`}/>
@@ -1223,16 +1230,19 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                                 <div className='min-h-46 flex-1 w-full relative p-4 flex flex-col gap-1.5 text-left'>
                                     <div className='font-bold text-xl'>{s.title}</div>
                                     <p className='text-sm leading-relaxed'>{s.description}</p>
-                                    <div className='mt-auto rounded-full size-8 border-2 flex self-end justify-center items-center hover:animate-[horizontal-bounce_1s_infinite]'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
-                                            <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
-                                        </svg>
+                                    <div className='mt-auto w-full flex justify-between items-center'>
+                                        <div className="flex items-center gap-2 text-xs font-semibold text-neutral-600 dark:text-neutral-400"></div>
+                                        <div className='rounded-full size-8 border-2 flex justify-center items-center hover:animate-[horizontal-bounce_1s_infinite]'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                                                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
                             </button>
                         ))}
                     </div>
-                    <button className="self-center flex items-center gap-2 cursor-pointer text-sm font-bold p-4 border-2 rounded-full transition-all hover:scale-103">
+                    <button className="self-center flex items-center gap-2 cursor-pointer text-sm font-bold p-4 border-2 rounded-full transition-all hover:scale-102 hover:text-orange">
                         <div>Suggest a Story</div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
@@ -1455,7 +1465,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
                                     </svg>
-                                    Show Trip Breakdown:
+                                    Show Trip List:
                                     <button onClick={()=>setShowInformation(!showInformation)} className={`ml-auto self-end cursor-pointer rounded-full w-11 h-6 transition-colors ${showInformation ? "bg-blue" : "bg-neutral-400"}`}>
                                         <div className={`transition-transform rounded-full size-4 mx-1 text-sm flex justify-center items-center bg-white ${showInformation && "translate-x-[125%]"}`}></div>
                                     </button>
@@ -1464,7 +1474,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
                                 <hr className="text-neutral-300 dark:text-neutral-700 my-2"/>
 
                                 <button 
-                                className="border w-full py-3 self-center mt-auto cursor-pointer bg-neutral-200 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 hover:dark:bg-neutral-800 active:scale-96"
+                                className="border w-full py-3 self-center mt-auto cursor-pointer text-neutral-900 dark:text-neutral-100 hover:bg-neutral-200 hover:dark:bg-neutral-900 active:scale-96"
                                 onClick={()=>{
                                     setLevel("playoffs");
                                     setSelectedGame(1);
