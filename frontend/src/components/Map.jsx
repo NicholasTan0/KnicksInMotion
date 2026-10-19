@@ -208,7 +208,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
     const stories = [
         {
             data: <Postgame/>,
-            src: '/src/assets/postgame.jpg',
+            src: '/assets/postgame.jpg',
             orientation: "object-center",
             id: 4,
             title: "Postgame Pursuits",
@@ -222,7 +222,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
         },
         {
             data: <Services setSelectedPeriod={setSelectedPeriod}/>,
-            src: '/src/assets/msg_taxi.webp',
+            src: '/assets/msg_taxi.webp',
             orientation: "object-bottom",
             id: 5,
             title: "A Dying Service?",
@@ -234,7 +234,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
         },
         {
             data: <HomeCourt setSelectedPeriod={setSelectedPeriod}/>,
-            src: '/src/assets/msg.webp',
+            src: '/assets/msg.webp',
             orientation: "object-bottom",
             id: 6,
             title: "There's No Place Like Home",
@@ -247,7 +247,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
         },
         {
             data: <Percentages/>,
-            src: '/src/assets/president.webp',
+            src: '/assets/president.webp',
             orientation: "object-top",
             id: 3,
             title: "President's Day",
@@ -260,7 +260,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
         },
         {
             data: <Boroughs/>,
-            src: '/src/assets/night.jpg',
+            src: '/assets/night.jpg',
             orientation: "object-top",
             id: 9,
             title: "Borough Breakdown",
@@ -269,7 +269,7 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
         },
         {
             data: <Airports/>,
-            src: '/src/assets/knicks_airplane.webp',
+            src: '/assets/knicks_airplane.webp',
             orientation: "object-top",
             id: 2,
             title: "Knicks Fans Travel Well",
@@ -277,14 +277,14 @@ export default function MapView({ theme, mode, setMode, story, setStory }) {
             text: `A notable pattern is the flow of airport-originating trips to Knicks game-day destinations. Nearly 1,000 trips from JFK and LaGuardia reached MSG within two hours before tipoff, highlighting the airports as significant sources of pregame traffic.`
         },
         {
-            src: '/src/assets/pregame.jpg',
+            src: '/assets/pregame.jpg',
             orientation: "object-bottom",
             id: 8,
             title: "[COMING SOON] - The Road to Tipoff",
             description: "Where were pickups happening before tipoff? Explore pickup locations for trips headed to MSG and other Knicks-related destinations in the hours leading up to games."
         },
         {
-            src: '/src/assets/crowd.jpg',
+            src: '/assets/crowd.jpg',
             orientation: "object-bottom",
             id: 7,
             title: "[COMING SOON] - Playoff Fever or Just New York?",

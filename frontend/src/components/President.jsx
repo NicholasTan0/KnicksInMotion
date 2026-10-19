@@ -2,7 +2,7 @@ export default function Percentages(){
     return (
         <div className="font-inter flex flex-col gap-6">
             <div className="w-full h-full relative">
-                <img src="/src/assets/zone.webp" className="h-full w-full object-cover border"/>
+                <img src="/assets/zone.webp" className="h-full w-full object-cover border"/>
                 <a className="absolute bottom-0 left-0 text-blue-700 hover:underline bg-neutral-200 text-xs p-0.5" href="https://www.cbsnews.com/newyork/news/knicks-game-3-nba-finals-nypd-secret-service-trump-msg/" target="_blank" rel="noopener noreferrer">Source: CBS News New York</a>
             </div>
 
